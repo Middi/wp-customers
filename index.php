@@ -43,23 +43,4 @@ add_action('wp_ajax_update_customer', 'rmb_update_customer');
 function rmb_update_customer() {
 	update_user_meta( get_current_user_id(), 'user_address', $_POST['user_address'] );
 }
-add_action( 'admin_menu', 'register_my_custom_menu_page' );
-function register_my_custom_menu_page() {
-  // add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
-  add_menu_page( 'Customers', 'Customers', 'manage_options', 'customer.php', 'customer_page', 'dashicons-welcome-widgets-menus', 90 );
-
-  function customer_page(){
-	?>
-<div class="wrap">
-    <h2>Welcome To My Plugin</h2>
-    <?php
-		$blogusers = get_users( 'role=customer' );
-		// Array of WP_User objects.
-		foreach ( $blogusers as $user ) {
-			echo '<span>' . esc_html( $user->user_email ) . '</span>';
-		}?>
-</div>
-<?php
-}
-}
 
