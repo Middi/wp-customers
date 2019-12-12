@@ -14,12 +14,6 @@ add_role('customer', __( 'Customer' ), array(
 	)
 );
 
-add_action('wp_enqueue_scripts', 'enqueue_jquery_form');
-
-function enqueue_jquery_form() {
-	wp_enqueue_script('jquery-form');
-}
-
 add_action('wp_ajax_create_customer', 'rmb_create_customer');
 
 add_action('wp_ajax_nopriv_create_customer', 'rmb_create_customer');
@@ -41,6 +35,6 @@ function rmb_create_customer() {
 add_action('wp_ajax_update_customer', 'rmb_update_customer');
 
 function rmb_update_customer() {
-	update_user_meta( get_current_user_id(), 'user_address', $_POST['user_address'] );
+	update_user_meta( $_POST['id'], 'user_address', $_POST['user_address'] );
 }
 
