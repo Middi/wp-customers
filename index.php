@@ -1,18 +1,14 @@
 <?php
 
 /**
- * Plugin Name: Customer User Role
+ * Plugin Name: Wordpress Advanced CRM
  * Plugin URI: https://richardmiddleton.me
- * Description: Adds a customer user role to users.
+ * Description: Advanced Wordpress CRM for building and maintaining customers.
  * Version: 1.0
  * Author: Richard Middleton
  */
 
-add_role('customer', __( 'Customer' ), array(
-		'read'         => true,
-		'edit_posts'   => false,
-	)
-);
+include plugin_dir_path(__FILE__) . 'user-role.php';
 
 include plugin_dir_path(__FILE__) . 'modify-customer.php';
 

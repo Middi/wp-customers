@@ -11,11 +11,13 @@ function customer_list_table_fn() {
 
 
     ob_start();
-    if ( isset( $_GET['customer'] ) ) {
-        $customer_id = $_GET['customer'];
+    if ( isset( $_GET['customer']) && $_GET['action'] == 'edit' ) {
         include_once plugin_dir_path( __FILE__ ) . 'views/user.php';
         die;
     }
+    // elseif( isset( $_GET['customer']) && $_GET['action'] == 'delete' ) {
+    //     wp_delete_user($_GET['customer']);
+    // }
 
     include_once plugin_dir_path(__FILE__) . 'views/customer-table-list.php';
 
