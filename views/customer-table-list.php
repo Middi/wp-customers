@@ -67,6 +67,11 @@ class CustomerListTable extends WP_List_Table {
         );
     }
 
+    function column_date($item){
+        //Return the title contents
+        return sprintf('<span>' . date( "d M y", strtotime($item['date'])) . '</span><br/><span>' . date( "h:ia", strtotime($item['date'])) . '</span>');
+    }
+
 
     function get_columns() {
 
