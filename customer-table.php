@@ -15,9 +15,6 @@ function customer_list_table_fn() {
         include_once plugin_dir_path( __FILE__ ) . 'views/user.php';
         die;
     }
-    // elseif( isset( $_GET['customer']) && $_GET['action'] == 'delete' ) {
-    //     wp_delete_user($_GET['customer']);
-    // }
 
     include_once plugin_dir_path(__FILE__) . 'views/customer-table-list.php';
 
@@ -27,4 +24,3 @@ function customer_list_table_fn() {
     
     echo $template;
 }
-

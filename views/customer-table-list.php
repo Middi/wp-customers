@@ -17,7 +17,6 @@ class CustomerListTable extends WP_List_Table {
     function column_default($item, $column_name) {
         switch ($column_name) {
             case 'customer':
-            case 'id':
             case 'email':
             case 'telephone':
             case 'date':
@@ -31,11 +30,12 @@ class CustomerListTable extends WP_List_Table {
         
         //Build row actions
         $actions = array(
-            'delete'    => sprintf('<a href="?page=%s&action=%s&customer=%s">Delete</a>',$_REQUEST['page'],'single_delete',$item['id']),
+            'edit'      => sprintf('<a href="?page=%s&action=%s&customer=%s">Edit</a>',$_REQUEST['page'], 'edit', $item['id']),
+            'delete'    => sprintf('<a href="?page=%s&action=%s&customer=%s">Delete</a>',$_REQUEST['page'], 'single_delete', $item['id']),
         );
         
         //Return the title contents
-        return sprintf('<a href="?page=%1$s&action=%2$s&customer=%3$s">%5$s %6$s</a><span style="color:silver">(id:%3$s)</span>%7$s',
+        return sprintf('<a href="?page=%1$s&action=%2$s&customer=%3$s">%5$s %6$s</a><span style="color:silver"> (id:%3$s)%7$s</span>',
             $_REQUEST['page'],
             'edit',
     /*$2%s*/ $item['id'],
@@ -46,10 +46,15 @@ class CustomerListTable extends WP_List_Table {
         );
     }
 
+    function column_email($item){
+        return sprintf('<a href="mailto:%1$s">%1$s</a>',
+            $item['email']
+        );
+    }
 
     function column_telephone($item){
         //Return the title contents
-        return sprintf($item['telephone'] ? '<a href="tel:%1$s"><span class="dashicons dashicons-phone" style="color: green;"></span></a>' : '<span class="dashicons dashicons-phone" disabled"></span>',
+        return sprintf($item['telephone'] ? '<a href="tel:%1$s"><span class="dashicons dashicons-phone" style="color: green;"></span> %1$s</a>' : '<span class="dashicons dashicons-phone" disabled"></span>',
             $item['telephone']
         );
     }
@@ -68,7 +73,6 @@ class CustomerListTable extends WP_List_Table {
         $columns = array(
             'cb'        => '<input type="checkbox" />',
             "customer" => "Customer",
-            "id" => "ID",
             "email" => "Email",
             "telephone" => "Telephone",
             "date" => "Registered",
@@ -90,18 +94,18 @@ class CustomerListTable extends WP_List_Table {
     }
 
     function process_bulk_action() {
-        if( 'delete'===$this->current_action() ) {
-            foreach($_GET['customer'] as $customer) {
+        if( 'delete' === $this->current_action() ) {
+            foreach($_POST['customer'] as $customer) {
                 wp_delete_user($customer);
+                rmb_custom_admin_notice('Customer Deleted');
+                $this->items = $this->wp_list_table_data($orderby, $order, $search_term);
             }
         }
-
-        elseif( 'single_delete'===$this->current_action() ) {
+        elseif( 'single_delete' === $this->current_action() ) {
             wp_delete_user($_GET['customer']);
+            rmb_custom_admin_notice('Customer Deleted');
+            $this->items = $this->wp_list_table_data($orderby, $order, $search_term);
         }
-
-        $this->items = $this->wp_list_table_data($orderby, $order, $search_term);
-
     }
 
     function prepare_items() {
@@ -142,21 +146,53 @@ class CustomerListTable extends WP_List_Table {
         global $wpdb;
         
         if (!empty($search_term)) {
-
-            $users = new WP_User_Query( array(
-                'role' => 'customer',
-                'search'         => '*'.esc_attr( $search_term ).'*',
-                'search_columns' => array(
+            $wp_user_query = new WP_User_Query(
+                array(
+                    'role' => 'customer',
+                    'search'         => '*'.esc_attr( $search_term ).'*',
+                    'search_columns' => array(
                     'user_login',
                     'user_nicename',
                     'user_email',
-                    'user_url',
                     'display_name',
-                    'telephone',
                 ),
+            
             ) );
 
-            $all_posts = $users->get_results() ? $users->get_results() : [];
+            $users = $wp_user_query->get_results();
+  
+            //search usermeta
+            $wp_user_query2 = new WP_User_Query(
+                array(
+                    'role' => 'customer',
+                    'meta_query' => array(
+                    'relation' => 'OR',
+                        array(
+                            'key' => 'first_name',
+                            'value' => $search_term,
+                            'compare' => 'LIKE'
+                        ),
+                        array(
+                            'key' => 'last_name',
+                            'value' => $search_term,
+                            'compare' => 'LIKE'
+                        ),
+                        array(
+                            'key' => 'telephone',
+                            'value' => $search_term,
+                            'compare' => 'LIKE'
+                        )
+                    )
+                )
+            );
+            
+            $users2 = $wp_user_query2->get_results();
+  
+            $totalusers_dup = array_merge($users,$users2);
+            
+            $users = array_unique($totalusers_dup, SORT_REGULAR);
+
+            $all_posts = $users ? $users : [];
         }
         else {
             if ($orderby == "customer" && $order == "desc") {
@@ -181,7 +217,6 @@ class CustomerListTable extends WP_List_Table {
                 $all_posts = get_users( array( 'role' => 'customer', 'order' => 'ASC' ) );
             }
         }
-
 
         $posts_array = array();
 
@@ -210,11 +245,11 @@ function customer_show_data_list_table() {
     ?>
     <div class="wrap">
         <h1 class="wp-heading-inline">Customers</h1>
-        <form method='get'>
+        <form method='post'>
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <?php
-            $customer_table->search_box("Search Customers", "search_post_id");
-            $customer_table->display();
+                $customer_table->search_box("Search Customers", "search_post_id");
+                $customer_table->display();
             ?>
         </form>
     </div>
@@ -222,16 +257,3 @@ function customer_show_data_list_table() {
 }
 
 customer_show_data_list_table();
-
-function col_styles() {
-    $page = ( isset($_GET['page'] ) ) ? esc_attr( $_GET['page'] ) : false;
-    if( 'customer-list-table' != $page )
-    return; 
-    
-    echo '<style type="text/css">';
-    echo '.column-id { width: 8%; }';
-    echo '.fixed .column-date { width: 15%; }';
-    echo '</style>';
-}
-
-col_styles();
