@@ -13,6 +13,7 @@ $address_line_2 = $meta['address_line_2'][0];
 $address_postcode = $meta['address_postcode'][0];
 $address_town = $meta['address_town'][0];
 $telephone = $meta['telephone'][0];
+$status = $meta['status'][0];
 ?>
 
 <div class="wrap">
@@ -37,12 +38,11 @@ $telephone = $meta['telephone'][0];
             <th><label for="email"><?php _e( 'Email' ); ?></label></th>
             <td><input class="regular-text" id="email" type="text" name="user_email" placeholder="Email" value="<?php echo esc_attr($user_email); ?>" /></td>
         </tr>
+
         <tr>
             <th><label for="address_line_1"><?php _e( 'Address Line 1' ); ?></label></th>
             <td><input class="regular-text" id="address_line_1" type="text" name="address_line_1" placeholder="Address Line 1" value="<?php echo esc_attr($address_line_1); ?>" /></td>
-        </tr>
-
-        <tr>
+        
             <th><label for="address_line_2"><?php _e( 'Address Line 2' ); ?></label></th>
             <td><input class="regular-text" id="address_line_2" type="text" name="address_line_2" placeholder="Address Line 2" value="<?php echo esc_attr($address_line_2); ?>" /></td>
         </tr>
@@ -50,12 +50,20 @@ $telephone = $meta['telephone'][0];
         <tr>
             <th><label for="address_town"><?php _e( 'Town/City' ); ?></label></th>
             <td><input class="regular-text" id="address_town" type="text" name="address_town" placeholder="Town/City" value="<?php echo esc_attr($address_town); ?>" /></td>
-        </tr>
-
-        <tr>
+        
             <th><label for="address_postcode"><?php _e( 'Postcode' ); ?></label></th>
             <td><input class="regular-text" id="address_postcode" type="text" name="address_postcode" placeholder="Postcode" value="<?php echo esc_attr($address_postcode); ?>" /></td>
         </tr>
+
+        <tr>
+            <select name="status" id="status" class="widefat">
+                <option value="pack_sent" <?php selected( $status, 'pack_sent'); ?>>Pack Sent</option>
+                <option value="pack_received" <?php selected( $status, 'pack_received'); ?>>Pack Received</option>
+                <option value="box_sent" <?php selected( $status, 'box_sent'); ?>>Box Sent</option>
+                <option value="box_received" <?php selected( $status, 'box_received'); ?>>Box Received</option>
+            </select>
+        </tr>
+
         </tbody>
     </table>
         <input type="hidden" name="action" value="update_customer" />

@@ -4,9 +4,9 @@
 
 <div class="wrap">
     <h1 class="wp-heading-inline">Add Customer</h1>
-    <!-- <div class="div" style="height: 30px; padding: 10px;">
-        <div class="notice notice-success is-dismissible" style="display: none; margin: 0;"><p>User Updated!</p></div>
-    </div> -->
+    <div class="div" style="height: 30px; padding: 10px;">
+        <div class="notice notice-success is-dismissible" style="display: none; margin: 0;"><p>User Created!</p></div>
+    </div>
     <form id="user-form" enctype="multipart/form-data" method="POST" action="<?php echo admin_url('admin-ajax.php'); ?>">
     <table class="form-table" role="presentation">
     <tbody>
@@ -43,6 +43,16 @@
             <th><label for="address_postcode"><?php _e( 'Postcode' ); ?></label></th>
             <td><input class="regular-text" id="address_postcode" type="text" name="address_postcode" placeholder="Postcode" value="<?php echo esc_attr($address_postcode); ?>" /></td>
         </tr>
+
+        <tr>
+            <select name="status" id="status" class="widefat">
+                    <option value="pack_sent">Pack Sent
+                    </option>
+                    <option value="pack_received">Pack Received
+                    </option>
+            </select>
+        </tr>
+
         </tbody>
     </table>
         <input type="hidden" name="action" value="create_customer" />

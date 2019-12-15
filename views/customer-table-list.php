@@ -19,6 +19,7 @@ class CustomerListTable extends WP_List_Table {
             case 'customer':
             case 'email':
             case 'telephone':
+            case 'status':
             case 'date':
                 return $item[$column_name];
             default:
@@ -58,6 +59,30 @@ class CustomerListTable extends WP_List_Table {
             $item['telephone']
         );
     }
+
+    function column_status($item){
+        $color = '';
+        switch ($item['status']) {
+            case 'pack_sent':
+                $color = 'red';
+                break;
+            case 'pack_received':
+                $color = 'green';
+                break;
+            case 'box_received':
+                $color = 'blue';
+                break;
+            case 'box_sent':
+                $color = 'orange';
+                break;
+            default: 
+                $color = 'grey';
+        }
+        return sprintf('<span class="status-circle" style="background-color: %1$s" title="%2$s"></span>',
+            $color,
+            $item['status']
+        );
+    }
         
     function column_cb($item){
         return sprintf(
@@ -80,6 +105,7 @@ class CustomerListTable extends WP_List_Table {
             "customer" => "Customer",
             "email" => "Email",
             "telephone" => "Telephone",
+            "status" => "Status",
             "date" => "Registered",
         );
         return $columns;
@@ -183,6 +209,11 @@ class CustomerListTable extends WP_List_Table {
                             'compare' => 'LIKE'
                         ),
                         array(
+                            'key' => 'status',
+                            'value' => $search_term,
+                            'compare' => 'LIKE'
+                        ),
+                        array(
                             'key' => 'telephone',
                             'value' => $search_term,
                             'compare' => 'LIKE'
@@ -234,6 +265,7 @@ class CustomerListTable extends WP_List_Table {
                     "date" => $post->user_registered,
                     "first_name" => get_usermeta($post->ID, 'first_name'),
                     "last_name" => get_usermeta($post->ID, 'last_name'),
+                    "status" => get_usermeta($post->ID, 'status'),
                     "telephone" => get_usermeta($post->ID, 'telephone')
                 );
             }
@@ -259,6 +291,18 @@ function customer_show_data_list_table() {
             ?>
         </form>
     </div>
+
+    <style>
+    .status-circle {
+        height: 12px;
+        width: 12px;
+        margin-left: 14px;
+        position: absolute;
+        content: '';
+        border-radius: 12px;
+    }
+
+    </style>
     <?php
 }
 
