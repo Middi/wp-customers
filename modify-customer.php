@@ -1,4 +1,5 @@
 <?php
+
 add_action('wp_ajax_create_customer', 'rmb_create_customer');
 
 add_action('wp_ajax_nopriv_create_customer', 'rmb_create_customer');
@@ -38,13 +39,21 @@ function rmb_update_customer() {
 		$metas = array( 
 			'first_name' => $_POST['first_name'], 
 			'last_name'  => $_POST['last_name'],
+			'user_email'  => $_POST['user_email'],
 			'telephone'  => $_POST['telephone'],
-			'user_address'  => $_POST['user_address'],
+            'address_line_1'  => $_POST['address_line_1'],
+            'address_line_2'  => $_POST['address_line_2'],
+            'address_town'  => $_POST['address_town'],
+            'address_postcode'  => $_POST['address_postcode'],
         );
 
 		foreach($metas as $key => $value) {
 			update_user_meta( $_POST['id'], $key, $value );
-		}
+        }
+        
+        echo "ddddd";
+        exit();
+    }
 
-}
+
 

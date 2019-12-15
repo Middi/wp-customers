@@ -1,25 +1,12 @@
 <?php
 
-$id = $_GET['customer'];
-$meta = get_user_meta($id);
-$user = get_userdata($id);
-
-$display_name = $user->display_name;
-$user_email = $user->user_email;
-$first_name = $meta['first_name'][0];
-$last_name = $meta['last_name'][0];
-$address_line_1 = $meta['address_line_1'][0];
-$address_line_2 = $meta['address_line_2'][0];
-$address_postcode = $meta['address_postcode'][0];
-$address_town = $meta['address_town'][0];
-$telephone = $meta['telephone'][0];
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?php echo $display_name; ?></h1>
-    <div class="div" style="height: 30px; padding: 10px;">
+    <h1 class="wp-heading-inline">Add Customer</h1>
+    <!-- <div class="div" style="height: 30px; padding: 10px;">
         <div class="notice notice-success is-dismissible" style="display: none; margin: 0;"><p>User Updated!</p></div>
-    </div>
+    </div> -->
     <form id="user-form" enctype="multipart/form-data" method="POST" action="<?php echo admin_url('admin-ajax.php'); ?>">
     <table class="form-table" role="presentation">
     <tbody>
@@ -58,8 +45,7 @@ $telephone = $meta['telephone'][0];
         </tr>
         </tbody>
     </table>
-        <input type="hidden" name="action" value="update_customer" />
-        <input type="hidden" name="id" value="<?php echo $id; ?>" />
+        <input type="hidden" name="action" value="create_customer" />
         
         <?php submit_button( __( 'Save', 'retro-money-beef' ), 'primary' ); ?>
     </form>

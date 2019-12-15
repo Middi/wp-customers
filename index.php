@@ -10,16 +10,10 @@
 
 include plugin_dir_path(__FILE__) . 'user-role.php';
 
+include plugin_dir_path(__FILE__) . 'notice.php';
+
 include plugin_dir_path(__FILE__) . 'modify-customer.php';
 
 include plugin_dir_path(__FILE__) . 'customer-table.php';
 
 
-// display custom admin notice
-function rmb_custom_admin_notice($message) { ?>
-	
-	<div class="notice notice-success is-dismissible">
-		<p><?php _e($message, 'retro-money-beef'); ?></p>
-	</div>
-	
-<?php }

@@ -250,6 +250,7 @@ function customer_show_data_list_table() {
     ?>
     <div class="wrap">
         <h1 class="wp-heading-inline">Customers</h1>
+        <a href="?page=add_customer" class="page-title-action">Add New</a>
         <form method='post'>
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <?php
