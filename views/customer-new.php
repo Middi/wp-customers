@@ -4,7 +4,7 @@
 
 <div class="wrap">
     <h1 class="wp-heading-inline">Add Customer</h1>
-    <div class="div" style="height: 30px; padding: 10px;">
+    <div class="notice-container" style="height: 30px; padding: 10px;">
         <div class="notice notice-success is-dismissible" style="display: none; margin: 0;"><p>User Created!</p></div>
     </div>
     <form id="user-form" enctype="multipart/form-data" method="POST" action="<?php echo admin_url('admin-ajax.php'); ?>">
@@ -26,7 +26,7 @@
         </tr>
         <tr>
             <th><label for="address_line_1"><?php _e( 'Address Line 1' ); ?></label></th>
-            <td><input class="regular-text" id="address_line_1" type="text" name="address_line_1" placeholder="Address Line 1" value="<?php echo esc_attr($address_line_1); ?>" /></td>
+            <td><input class="regular-text" id="address_line_1" type="text" name="address_line_1" placeholder="Address Line 1" value="<?php echo esc_attr($address_line_1); ?>" required/></td>
         </tr>
 
         <tr>
@@ -45,12 +45,7 @@
         </tr>
 
         <tr>
-            <select name="status" id="status" class="widefat">
-                    <option value="pack_sent">Pack Sent
-                    </option>
-                    <option value="pack_received">Pack Received
-                    </option>
-            </select>
+            <input name="status" type="hidden" id="status" value="pack_sent"/>
         </tr>
 
         </tbody>

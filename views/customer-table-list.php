@@ -141,8 +141,6 @@ class CustomerListTable extends WP_List_Table {
 
     function prepare_items() {
 
-        global $wpdb; //This is used only if making any database queries
-
         $orderby = isset($_GET['orderby']) ? trim($_GET['orderby']) : "";
         $order = isset($_GET['order']) ? trim($_GET['order']) : "";
 
@@ -174,8 +172,6 @@ class CustomerListTable extends WP_List_Table {
 
     function wp_list_table_data($orderby = '', $order = '', $search_term = '') {
 
-        global $wpdb;
-        
         if (!empty($search_term)) {
             $wp_user_query = new WP_User_Query(
                 array(
@@ -183,6 +179,7 @@ class CustomerListTable extends WP_List_Table {
                     'search'         => '*'.esc_attr( $search_term ).'*',
                     'search_columns' => array(
                     'user_login',
+                    'ID',
                     'user_nicename',
                     'user_email',
                     'display_name',
@@ -250,7 +247,7 @@ class CustomerListTable extends WP_List_Table {
                 $all_posts = get_users( array( 'role' => 'customer', 'order' => 'ASC', 'orderby' => 'user_registered' ) );
             }
             else {
-                $all_posts = get_users( array( 'role' => 'customer', 'order' => 'ASC' ) );
+                $all_posts = get_users( array( 'role' => 'customer', 'order' => 'DESC', 'orderby' => 'user_registered' ) );
             }
         }
 
