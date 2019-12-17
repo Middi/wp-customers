@@ -75,3 +75,23 @@ $status = $meta['status'][0];
 
 
 <?php
+    $loop = new WP_Query( array( 'post_type' => 'rmborder',
+        'meta_query' => array(
+            'relation' => 'OR',
+                array(
+                    'key'   => 'customer_id',
+                    'value' => $id
+                )
+        )
+    ) );
+    if ( $loop->have_posts() ) :
+        while ( $loop->have_posts() ) : $loop->the_post();
+        
+        ?>
+<a href="/wp-admin/post.php?post=<?php the_ID(); ?>&action=edit">Order <?php the_title(); ?></a>
+
+            
+        <?php endwhile;
+    endif;
+    wp_reset_postdata();
+
