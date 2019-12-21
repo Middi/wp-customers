@@ -28,7 +28,6 @@ class CustomerListTable extends WP_List_Table {
     }
 
     function column_customer($item){
-        
         //Build row actions
         $actions = array(
             'edit'      => sprintf('<a href="?page=%s&action=%s&customer=%s">Edit</a>',$_REQUEST['page'], 'edit', $item['id']),
@@ -39,11 +38,11 @@ class CustomerListTable extends WP_List_Table {
         return sprintf('<a href="?page=%1$s&action=%2$s&customer=%3$s">%5$s %6$s</a><span style="color:silver"> (id:%3$s)%7$s</span>',
             $_REQUEST['page'],
             'edit',
-    /*$2%s*/ $item['id'],
-    /*$1%s*/ $item['customer'],
-    /*$1%s*/ $item['first_name'],
-    /*$1%s*/ $item['last_name'],
-             $this->row_actions($actions)
+            $item['id'],
+            $item['customer'],
+            $item['first_name'],
+            $item['last_name'],
+            $this->row_actions($actions)
         );
     }
 
@@ -54,7 +53,6 @@ class CustomerListTable extends WP_List_Table {
     }
 
     function column_telephone($item){
-        //Return the title contents
         return sprintf($item['telephone'] ? '<a href="tel:%1$s"><span class="dashicons dashicons-phone" style="color: green;"></span> %1$s</a>' : '<span class="dashicons dashicons-phone" disabled"></span>',
             $item['telephone']
         );
@@ -87,8 +85,8 @@ class CustomerListTable extends WP_List_Table {
     function column_cb($item){
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
-            /*$1%s*/ $this->_args['singular'],  //Let's simply repurpose the table's singular label ("movie")
-            /*$2%s*/ $item['id']                //The value of the checkbox should be the record's id
+            $this->_args['singular'],  //Let's simply repurpose the table's singular label ("movie")
+            $item['id']                //The value of the checkbox should be the record's id
         );
     }
 

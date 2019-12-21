@@ -17,7 +17,6 @@ function add_customer_fn() {
 
 function customer_list_table_fn() {
 
-
     ob_start();
     if ( isset( $_GET['customer']) && $_GET['action'] == 'edit' ) {
         include_once plugin_dir_path( __FILE__ ) . 'views/user.php';
