@@ -8,6 +8,11 @@
  * Author: Richard Middleton
  */
 
+if(!function_exists('add_action')){
+    echo 'hi there im just a plugin, i cant be called directly';
+    exit;
+ }
+ 
 include plugin_dir_path(__FILE__) . 'user-role.php';
 
 include plugin_dir_path(__FILE__) . 'notice.php';
