@@ -17,7 +17,7 @@ function mailchimp_post($FNAME, $LNAME, $EMAIL) {
                 echo '<p>Error: ' . $error->message . '</p>';
             }
         } elseif( $result->status == 'subscribed' ){
-            echo 'Thank you, ' . $result->merge_fields->FNAME . '. You have subscribed successfully';
+            echo 'User ' . $result->merge_fields->FNAME . ' has been created';
         }
         // $result['id'] - Subscription ID
         // $result['ip_opt'] - Subscriber IP address

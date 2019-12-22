@@ -40,7 +40,6 @@ function rmb_create_customer() {
 		// send details to mailchimp function
 		mailchimp_post($metas['first_name'], $metas['last_name'], $metas['user_email']);
 		
-		echo "user_created";
 		exit();
 	}
 	else {
