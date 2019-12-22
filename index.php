@@ -21,4 +21,5 @@ include plugin_dir_path(__FILE__) . 'modify-customer.php';
 
 include plugin_dir_path(__FILE__) . 'customer-table.php';
 
+include plugin_dir_path(__FILE__) . 'settings.php';
 

@@ -1,4 +1,5 @@
 <?php
+include plugin_dir_path(__FILE__) . 'views/mailchimp.php';
 
 add_action('wp_ajax_create_customer', 'rmb_create_customer');
 
@@ -35,10 +36,16 @@ function rmb_create_customer() {
 		}
 
 		wp_new_user_notification($user_id, $random_password);
+
+		// send details to mailchimp function
+		mailchimp_post($metas['first_name'], $metas['last_name'], $metas['user_email']);
+		
+		echo "user_created";
+		exit();
 	}
 	else {
 		$random_password = __('User already exists.  Password inherited.');
-	}
+	}			
 }
 
 add_action('wp_ajax_update_customer', 'rmb_update_customer');
@@ -62,6 +69,4 @@ function rmb_update_customer() {
         }
         exit();
     }
-
-
 
