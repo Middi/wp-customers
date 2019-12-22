@@ -1,16 +1,17 @@
 <?php
 
-function mailchimp_post($FNAME, $LNAME, $EMAIL) {
+function mailchimp_post($FNAME, $LNAME, $EMAIL, $ID) {
 		
     $postData = array(
         "EMAIL" => $EMAIL, 
         "FNAME" => $FNAME,
-        "LNAME" => $LNAME
+        "LNAME" => $LNAME,
+        "ID" => $ID
         );
     
         $list_id = esc_attr( get_option('mailchimp_list_id') );
         $api_key = esc_attr( get_option('mailchimp_api') );
-        $result = json_decode( rudr_mailchimp_subscriber_status($postData['EMAIL'], 'subscribed', $list_id, $api_key, array('FNAME' => $postData['FNAME'],'LNAME' => $postData['LNAME']) ) );
+        $result = json_decode( rudr_mailchimp_subscriber_status($EMAIL, 'subscribed', $list_id, $api_key, array('FNAME' => $FNAME,'LNAME' => $LNAME, 'RMB_ID' => $ID) ) );
         // print_r( $result ); 
         if( $result->status == 400 ){
             foreach( $result->errors as $error ) {

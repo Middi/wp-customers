@@ -38,7 +38,7 @@ function rmb_create_customer() {
 		wp_new_user_notification($user_id, $random_password);
 
 		// send details to mailchimp function
-		mailchimp_post($metas['first_name'], $metas['last_name'], $metas['user_email']);
+		mailchimp_post($metas['first_name'], $metas['last_name'], $metas['user_email'], $user_id);
 		
 		exit();
 	}
