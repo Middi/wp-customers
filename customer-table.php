@@ -7,8 +7,13 @@ function customer_list_table_menu() {
     add_menu_page("Customers", "Customers", "manage_options", "customer-list-table", "customer_list_table_fn", "dashicons-admin-users", 20);
     add_submenu_page( 'customer-list-table', 'add_customer', 'Add Customer',
     'manage_options', "add_customer", 'add_customer_fn');
+
+    // mailchimp setup
     add_submenu_page( 'customer-list-table', 'customer_table_settings', 'Settings',
-    'administrator', __FILE__, 'rmb_plugin_settings_page');
+    'manage_options', 'mailchimp_settings', 'rmb_plugin_settings_page');
+    // register options
+	register_setting( 'rmb-plugin-settings-group', 'mailchimp_api' );
+	register_setting( 'rmb-plugin-settings-group', 'mailchimp_list_id' );
 }
 
 
