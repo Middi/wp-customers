@@ -1,13 +1,6 @@
 <?php
 
 function mailchimp_post($FNAME, $LNAME, $EMAIL, $ID) {
-		
-    $postData = array(
-        "EMAIL" => $EMAIL, 
-        "FNAME" => $FNAME,
-        "LNAME" => $LNAME,
-        "ID" => $ID
-        );
     
         $list_id = esc_attr( get_option('mailchimp_list_id') );
         $api_key = esc_attr( get_option('mailchimp_api') );
