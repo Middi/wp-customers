@@ -43,8 +43,13 @@ function rmb_create_customer() {
 		exit();
 	}
 	else {
-		$random_password = __('User already exists.  Password inherited.');
-	}			
+		$status = array(
+			"status" => 0,
+			"message" => "Email already taken",
+		);
+		echo json_encode($status);
+		exit();
+    }			
 }
 
 add_action('wp_ajax_update_customer', 'rmb_update_customer');
