@@ -5,12 +5,10 @@ function mailchimp_post($FNAME, $LNAME, $EMAIL, $ID) {
         $list_id = esc_attr( get_option('mailchimp_list_id') );
         $api_key = esc_attr( get_option('mailchimp_api') );
         $result = json_decode( rudr_mailchimp_subscriber_status($EMAIL, 'subscribed', $list_id, $api_key, array('FNAME' => $FNAME,'LNAME' => $LNAME, 'RMB_ID' => $ID) ) );
-        // print_r( $result ); 
         if( $result->status == 400 ){
-            foreach( $result->errors as $error ) {
-                echo '<p>Error: ' . $error->message . '</p>';
-            }
-        } elseif( $result->status == 'subscribed' ){
+            echo json_encode(['status' => 0, 'message' => 'Something went wrong.']);
+        }
+        elseif( $result->status == 'subscribed' ){
             echo json_encode(['status' => 1, 'message' => 'You are now signed up, Check your email.']);
         }
         // $result['id'] - Subscription ID
@@ -26,8 +24,7 @@ function mailchimp_post($FNAME, $LNAME, $EMAIL, $ID) {
             'status'        => $status,
             'merge_fields'  => $merge_fields
         );
-    
-        // print_r($data);
+
         $mch_api = curl_init(); // initialize cURL connection
      
         curl_setopt($mch_api, CURLOPT_URL, 'https://' . substr($api_key,strpos($api_key,'-')+1) . '.api.mailchimp.com/3.0/lists/' . $list_id . '/members/' . md5(strtolower($data['email_address'])));

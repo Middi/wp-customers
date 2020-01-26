@@ -6,12 +6,18 @@ add_action('wp_ajax_create_customer', 'rmb_create_customer');
 add_action('wp_ajax_nopriv_create_customer', 'rmb_create_customer');
 
 function rmb_create_customer() {
-	if ( email_exists($_POST['user_email']) == false ) {
+	$status = array(
+		"status" => 0,
+		"message" => "Email already taken.",
+	);
+
+	if ( !email_exists($_POST['user_email'])) {
 		$pass1 = $_POST['pass1'];
 		$pass2 = $_POST['pass2'];
 		if (($pass1 != $pass2) ){
-			echo "<span style='color:#FF0000'><strong>Error..</strong></span><br /><br />please use a passwords don't match.";
-				exit();
+			$status['message'] = "Passwords do not match.";
+			echo json_encode($status);
+			exit();
         }
 
         $date = date_create();
@@ -35,7 +41,7 @@ function rmb_create_customer() {
 			update_user_meta( $user_id, $key, $value );
 		}
 
-		wp_new_user_notification($user_id, $random_password);
+		wp_new_user_notification($user_id);
 
 		// send details to mailchimp function
 		mailchimp_post($metas['first_name'], $metas['last_name'], $metas['user_email'], $user_id);
@@ -43,10 +49,6 @@ function rmb_create_customer() {
 		exit();
 	}
 	else {
-		$status = array(
-			"status" => 0,
-			"message" => "Email already taken",
-		);
 		echo json_encode($status);
 		exit();
     }			
